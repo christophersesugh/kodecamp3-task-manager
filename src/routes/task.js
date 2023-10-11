@@ -17,15 +17,9 @@ import {
 
 const router = express.Router();
 
-router.get("/", tokenAuth, getTasksValidationRegister, validateTask, getTasks);
-router.get("/:id", tokenAuth, getTaskValidationRegister, validateTask, getTask);
-router.post(
-  "/",
-  tokenAuth,
-  createTasksValidationRegister,
-  validateTask,
-  createTask
-);
+router.get("/", tokenAuth, getTasks);
+router.get("/:id", tokenAuth, getTask);
+router.post("/", tokenAuth, createTask);
 router.patch("/:id", tokenAuth, editTask);
 router.delete("/:id", tokenAuth, deleteTask);
 
