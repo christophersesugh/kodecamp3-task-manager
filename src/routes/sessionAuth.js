@@ -1,5 +1,5 @@
 import express from "express";
-import { login, logout, me, register } from "../controllers/seessionAuth.js";
+import { login, logout, me, register } from "../controllers/sessionAuth.js";
 import { sessionAuth } from "../middleware/sessionAuth.js";
 import {
   loginAuthValidationRegister,
@@ -12,7 +12,7 @@ router.post(
   "/register",
   registerAuthValidationRegister,
   validateAuth,
-  register
+  register,
 );
 router.post("/login", loginAuthValidationRegister, validateAuth, login);
 router.get("/me", sessionAuth, me);
