@@ -30,7 +30,7 @@ const register = asyncWrapper(async (req, res) => {
   if (oldUser) {
     throw new CustomErrorApi(
       `User with username ${username} already exists.`,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -48,8 +48,9 @@ const register = asyncWrapper(async (req, res) => {
  * Login function
  */
 const login = asyncWrapper(async (req, res) => {
+  console.log(req.body);
   const { username, password } = req.body;
-  const oldUser = await database.user.findUnique({
+  const oldUser = await database.user.findFirst({
     where: { username },
   });
   if (!oldUser) {

@@ -8,6 +8,7 @@ import {
   getTasks,
 } from "../controllers/task.js";
 import { tokenAuth } from "../middleware/tokenAuth.js";
+import { sessionAuth } from "../middleware/sessionAuth.js";
 import {
   createTasksValidationRegister,
   getTaskValidationRegister,
@@ -17,10 +18,10 @@ import {
 
 const router = express.Router();
 
-router.get("/", tokenAuth, getTasks);
-router.get("/:id", tokenAuth, getTask);
-router.post("/", tokenAuth, createTask);
-router.patch("/:id", tokenAuth, editTask);
-router.delete("/:id", tokenAuth, deleteTask);
+router.get("/", sessionAuth, getTasks);
+router.get("/:id", sessionAuth, getTask);
+router.post("/", sessionAuth, createTask);
+router.patch("/:id", sessionAuth, editTask);
+router.delete("/:id", sessionAuth, deleteTask);
 
 export default router;
