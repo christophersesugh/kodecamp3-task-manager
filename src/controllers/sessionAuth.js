@@ -3,14 +3,13 @@ import bcrypt from "bcryptjs";
 import { asyncWrapper } from "../middleware/async-wrapper.js";
 import { CustomErrorApi } from "../errors/custom-error-api.js";
 import { database } from "../libs/prisma.js";
-
 const register = asyncWrapper(async (req, res) => {
   const { username, password } = req.body;
   const oldUser = await database.user.findFirst({ where: { username } });
   if (oldUser) {
     throw new CustomErrorApi(
       `User with username ${username} already exists.`,
-      StatusCodes.BAD_REQUEST
+      StatusCodes.BAD_REQUEST,
     );
   }
 
@@ -42,6 +41,7 @@ const login = asyncWrapper(async (req, res) => {
   function serializeUser(user) {
     return { id: user.id, username: user.username };
   }
+
   req.session.user = serializeUser(oldUser);
   res.status(StatusCodes.OK).json({ message: "Login success.", errors: null });
 });
@@ -57,7 +57,7 @@ const logout = asyncWrapper(async (req, res) => {
     if (err) {
       throw new CustomErrorApi(
         "Internal server error",
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
     res.redirect("/login");

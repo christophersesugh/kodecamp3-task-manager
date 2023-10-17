@@ -12,6 +12,7 @@ const getTasks = asyncWrapper(async (req, res) => {
       OR: [{ title: q }, { completed: completed === "true" ? true : false }],
     },
   });
+
   res.status(StatusCodes.OK).json({ tasks, errors: null });
 });
 
@@ -20,6 +21,7 @@ const getTask = asyncWrapper(async (req, res) => {
   const { id: userId } = req.user;
   const task = await database.task.findUnique({
     where: { id, userId },
+    select: { title: true, description: true, user: true },
   });
   res.status(StatusCodes.OK).json({ task });
 });

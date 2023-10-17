@@ -6,10 +6,14 @@ import rateLimit from "express-rate-limit";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
+import compression from "compression";
+import morgan from "morgan";
+// import winston from "winston";
 import "express-async-errors";
 import sessionAuth from "./routes/sessionAuth.js";
 import tokenAuth from "./routes/tokenAuth.js";
 import task from "./routes/task.js";
+import { shouldCompress } from "./middleware/compression.js";
 import { notFound } from "./middleware/not-found.js";
 import { errorHandler } from "./middleware/error-handler.js";
 
@@ -21,6 +25,27 @@ dotenv.config();
 const PORT = process.env.PORT;
 const DATABASE_URL = process.env.DATABASE_URL;
 const SECRET = process.env.SECRET;
+
+// const logger = winston.createLogger({
+//   level: "info",
+//   format: winston.format.json(),
+//   defaultMeta: { service: "user-service" },
+//   transports: [
+//
+// - Write all logs with importance level of `error` or less to `error.log`
+// - Write all logs with importance level of `info` or less to `combined.log`
+//
+//     new winston.transports.File({ filename: "error.log", level: "error" }),
+//     new winston.transports.File({ filename: "combined.log" }),
+//   ],
+// });
+// if (process.env.NODE_ENV !== "production") {
+//   logger.add(
+//     new winston.transports.Console({
+//       format: winston.format.simple(),
+//     }),
+//   );
+// }
 
 const env = app.get("env") === "production";
 
@@ -54,11 +79,14 @@ const sessionOptions = {
 /**
  * Application level middleware
  */
+app.use(morgan("common"));
+// app.use(logger());
 app.use(helmet());
 app.use(xss());
 app.use(limiter);
 app.use("/", express.static("public"));
 app.use(session(sessionOptions));
+app.use(compression({ shouldCompress, threshold: 10 }));
 
 app.use("/session-auth", sessionAuth);
 app.use("/token-auth", tokenAuth);
