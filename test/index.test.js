@@ -6,6 +6,6 @@ describe('Testing mocha', () => {
   });
 
   it('The sum of 1 + 1', () => {
-    expect(1 + 1).to.equal(3);
+    expect(1 + 1).to.equal(2);
   });
 });
