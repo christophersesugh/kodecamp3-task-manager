@@ -1,8 +1,8 @@
-import { StatusCodes } from "http-status-codes";
-import bcrypt from "bcryptjs";
-import { asyncWrapper } from "../middleware/async-wrapper.js";
-import { CustomErrorApi } from "../errors/custom-error-api.js";
-import { database } from "../libs/prisma.js";
+import { StatusCodes } from 'http-status-codes';
+import bcrypt from 'bcryptjs';
+import { asyncWrapper } from '../middleware/async-wrapper.js';
+import { CustomErrorApi } from '../errors/custom-error-api.js';
+import { database } from '../libs/prisma.js';
 const register = asyncWrapper(async (req, res) => {
   const { username, password } = req.body;
   const oldUser = await database.user.findFirst({ where: { username } });
@@ -19,9 +19,10 @@ const register = asyncWrapper(async (req, res) => {
     select: { id: true, username: true },
   });
   req.session.user = user;
-  res
-    .status(StatusCodes.CREATED)
-    .json({ message: "Registration successful.", errors: null });
+  res.status(StatusCodes.CREATED).json({
+    message: 'Registration successful.',
+    errors: null,
+  });
 });
 
 const login = asyncWrapper(async (req, res) => {
@@ -30,12 +31,12 @@ const login = asyncWrapper(async (req, res) => {
     where: { username },
   });
   if (!oldUser) {
-    throw new CustomErrorApi("Invalid credentials.", StatusCodes.BAD_REQUEST);
+    throw new CustomErrorApi('Invalid credentials.', StatusCodes.BAD_REQUEST);
   }
 
   const correctPassword = await bcrypt.compare(password, oldUser.passwordHash);
   if (!correctPassword) {
-    throw new CustomErrorApi("Invalid credentials", StatusCodes.BAD_REQUEST);
+    throw new CustomErrorApi('Invalid credentials', StatusCodes.BAD_REQUEST);
   }
 
   function serializeUser(user) {
@@ -43,7 +44,10 @@ const login = asyncWrapper(async (req, res) => {
   }
 
   req.session.user = serializeUser(oldUser);
-  res.status(StatusCodes.OK).json({ message: "Login success.", errors: null });
+  res.status(StatusCodes.OK).json({
+    message: 'Login success.',
+    errors: null,
+  });
 });
 
 const me = asyncWrapper(async (req, res) => {
@@ -56,11 +60,11 @@ const logout = asyncWrapper(async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       throw new CustomErrorApi(
-        "Internal server error",
+        'Internal server error',
         StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
-    res.redirect("/login");
+    res.redirect('/login');
   });
 });
 export { register, login, logout, me };

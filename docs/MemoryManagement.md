@@ -4,39 +4,39 @@ Memory management in an Express.js application is crucial for ensuring that your
 
 1. **Identify Memory Leaks:**
 
-   - Start by monitoring your application for memory leaks. Tools like Node.js's built-in `heapdump` or third-party tools like `node-memwatch` can help you identify and analyze memory usage.
+    - Start by monitoring your application for memory leaks. Tools like Node.js's built-in `heapdump` or third-party tools like `node-memwatch` can help you identify and analyze memory usage.
 
 2. **Optimize Data Structures:**
 
-   - Carefully choose data structures. Use efficient data structures, like Map or Set, when storing data in memory. Avoid using global variables to store large amounts of data, as they can lead to memory leaks.
+    - Carefully choose data structures. Use efficient data structures, like Map or Set, when storing data in memory. Avoid using global variables to store large amounts of data, as they can lead to memory leaks.
 
 3. **Minimize Object Creation:**
 
-   - Creating too many objects can strain memory. Reuse objects when possible and avoid unnecessary object creation within hot code paths.
+    - Creating too many objects can strain memory. Reuse objects when possible and avoid unnecessary object creation within hot code paths.
 
 4. **Use Stream and Buffering:**
 
-   - When handling large files or streams, use Node.js streams for efficient data processing. This avoids loading the entire file into memory at once.
+    - When handling large files or streams, use Node.js streams for efficient data processing. This avoids loading the entire file into memory at once.
 
 5. **Middleware and Request Handling:**
 
-   - Be cautious with middleware. Some middleware can consume memory, especially if they parse or buffer request bodies. Use middleware judiciously and only where necessary.
+    - Be cautious with middleware. Some middleware can consume memory, especially if they parse or buffer request bodies. Use middleware judiciously and only where necessary.
 
 6. **Limit Concurrent Requests:**
 
-   - Ensure that your app doesn't process too many concurrent requests, as each request consumes memory. You can limit this using tools like the `express-rate-limit` middleware.
+    - Ensure that your app doesn't process too many concurrent requests, as each request consumes memory. You can limit this using tools like the `express-rate-limit` middleware.
 
 7. **Caching:**
 
-   - Implement caching for frequently accessed data. Caching can reduce the load on your server and minimize memory usage.
+    - Implement caching for frequently accessed data. Caching can reduce the load on your server and minimize memory usage.
 
 8. **Connection Pooling:**
 
-   - If your app uses a database, ensure that you use connection pooling to manage database connections efficiently. This helps in reusing connections and reduces the memory overhead of maintaining multiple connections.
+    - If your app uses a database, ensure that you use connection pooling to manage database connections efficiently. This helps in reusing connections and reduces the memory overhead of maintaining multiple connections.
 
 9. **Clean Up Resources:**
 
-   - Explicitly release resources when they are no longer needed. This includes closing database connections, file handles, and other resources.
+    - Explicitly release resources when they are no longer needed. This includes closing database connections, file handles, and other resources.
 
 10. **Optimize Dependencies:**
 

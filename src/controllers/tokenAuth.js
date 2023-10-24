@@ -1,9 +1,9 @@
-import { StatusCodes } from "http-status-codes";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { asyncWrapper } from "../middleware/async-wrapper.js";
-import { CustomErrorApi } from "../errors/custom-error-api.js";
-import { database } from "../libs/prisma.js";
+import { StatusCodes } from 'http-status-codes';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { asyncWrapper } from '../middleware/async-wrapper.js';
+import { CustomErrorApi } from '../errors/custom-error-api.js';
+import { database } from '../libs/prisma.js';
 
 const SECRET = process.env.SECRET;
 const LIFETIME = process.env.JWT_LIFETIME;
@@ -54,12 +54,12 @@ const login = asyncWrapper(async (req, res) => {
     where: { username },
   });
   if (!oldUser) {
-    throw new CustomErrorApi("Invalid credentials.", StatusCodes.BAD_REQUEST);
+    throw new CustomErrorApi('Invalid credentials.', StatusCodes.BAD_REQUEST);
   }
 
   const correctPassword = await bcrypt.compare(password, oldUser.passwordHash);
   if (!correctPassword) {
-    throw new CustomErrorApi("Invalid credentials", StatusCodes.BAD_REQUEST);
+    throw new CustomErrorApi('Invalid credentials', StatusCodes.BAD_REQUEST);
   }
 
   const token = signUser(oldUser, SECRET, LIFETIME);

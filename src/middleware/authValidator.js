@@ -1,21 +1,21 @@
-import { check, validationResult } from "express-validator";
+import { check, validationResult } from 'express-validator';
 
 const registerAuthValidationRegister = [
-  check("username")
+  check('username')
     .notEmpty()
-    .withMessage("username required")
+    .withMessage('username required')
     .isLength({ min: 5 })
-    .withMessage("username must be at least 5 characters long."),
-  check("password")
+    .withMessage('username must be at least 5 characters long.'),
+  check('password')
     .notEmpty()
-    .withMessage("password required")
+    .withMessage('password required')
     .isLength({ min: 6 })
-    .withMessage("password must be at least 6 characters long."),
+    .withMessage('password must be at least 6 characters long.'),
 ];
 
 const loginAuthValidationRegister = [
-  check("username").notEmpty().withMessage("username required"),
-  check("password").notEmpty().withMessage("password required"),
+  check('username').notEmpty().withMessage('username required'),
+  check('password').notEmpty().withMessage('password required'),
 ];
 
 const validateAuth = async (req, res, next) => {

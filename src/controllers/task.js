@@ -1,18 +1,24 @@
-"use strict";
-import { StatusCodes } from "http-status-codes";
-import { database } from "../libs/prisma.js";
-import { asyncWrapper } from "../middleware/async-wrapper.js";
+'use strict';
+import { StatusCodes } from 'http-status-codes';
+import { database } from '../libs/prisma.js';
+import { cache } from '../libs/cache.js';
+import { asyncWrapper } from '../middleware/async-wrapper.js';
 
 const getTasks = asyncWrapper(async (req, res) => {
+  const cacheKey = `__kctm__${req.url}`;
   const { id: userId } = req.user;
   const { q, completed } = req.query;
   const tasks = await database.task.findMany({
     where: {
       userId,
-      OR: [{ title: q }, { completed: completed === "true" ? true : false }],
+      OR: [{ title: q }, { completed: completed === 'true' ? true : false }],
     },
   });
-
+  const result = cache.set('test', tasks, 3600);
+  console.log(result);
+  if (result === undefined) {
+    console.log('cache missed');
+  }
   res.status(StatusCodes.OK).json({ tasks, errors: null });
 });
 
