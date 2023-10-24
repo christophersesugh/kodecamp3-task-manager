@@ -8,9 +8,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "build": "esbuild src/index.js --bundle --platform=node --target=node18 --outfile=build/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "format": "eslint .",
-    "prettier:write": "npx prettier --write .",
+    "prettier:write": "npx prettier --write src/*",
     "prettier:check": "npx prettier --check .",
     "prepare": "husky install"
   },
@@ -22,12 +22,14 @@
   "author": "Kodecamp",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.3.10",
     "esbuild": "0.19.5",
     "eslint": "^8.52.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
+    "mocha": "^10.2.0",
     "nodemon": "^3.0.1",
     "prettier": "3.0.3"
   },
