@@ -1,22 +1,23 @@
-'use strict';
+/* eslint-disable import/extensions */
+
 import { StatusCodes } from 'http-status-codes';
 import { database } from '../libs/prisma.js';
 import { cache } from '../libs/cache.js';
 import { asyncWrapper } from '../middleware/async-wrapper.js';
 
 const getTasks = asyncWrapper(async (req, res) => {
-  const cacheKey = `__kctm__${req.url}`;
+  // const cacheKey = `__kctm__${req.url}`;
   const { id: userId } = req.user;
   const { q, completed } = req.query;
   const tasks = await database.task.findMany({
     where: {
       userId,
-      OR: [{ title: q }, { completed: completed === 'true' ? true : false }],
+      OR: [{ title: q }, { completed: completed === 'true' }],
     },
   });
   const result = cache.set('test', tasks, 3600);
-  console.log(result);
   if (result === undefined) {
+    // eslint-disable-next-line no-console
     console.log('cache missed');
   }
   res.status(StatusCodes.OK).json({ tasks, errors: null });
@@ -61,7 +62,7 @@ const deleteTask = asyncWrapper(async (req, res) => {
     .delete({ where: { id, userId } })
     .catch((error) => error.meta);
   res.status(StatusCodes.OK).json({
-    task: task ? task : null,
+    task: task || null,
     errors: task?.cause ? task.cause : null,
   });
 });

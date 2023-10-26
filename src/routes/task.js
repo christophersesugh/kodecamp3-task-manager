@@ -20,14 +20,7 @@ import { cache } from '../libs/cache.js';
 
 const router = express.Router();
 
-function check(req, res, next) {
-  const cacheKey = `__kctm__${req.url}`;
-
-  const data = cache.get('test');
-  console.log(data);
-}
-
-router.get('/', sessionAuth, check, getTasks);
+router.get('/', sessionAuth, getTasks);
 router.get('/:id', sessionAuth, getTask);
 router.post('/', sessionAuth, createTask);
 router.patch('/:id', sessionAuth, editTask);
